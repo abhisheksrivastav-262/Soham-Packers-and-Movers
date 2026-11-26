@@ -1,9 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
   Check,
   CheckCheck,
+  ChevronLeft,
+  ChevronRight,
   Clock3,
   HeartHandshake,
   MapPin,
@@ -46,7 +49,10 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title },
-      { name: "description", content: description },
+      {
+        name: "description",
+        content: `Best Packers and Movers in Mumbai for home, office and vehicle shifting. Ask Soham about a Best packing service and Near me shifting services. Call ${business.phones.join(" / ")}.`,
+      },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
@@ -146,6 +152,92 @@ const reasons = [
     text: "A team you can speak to about your requirements.",
   },
 ];
+
+const moveMedia = [
+  {
+    type: "image" as const,
+    src: "/media/soham-moving-day.jpeg",
+    title: "Soham Packers and Movers service poster",
+  },
+  ...[
+    ["/media/soham-moving-01.mp4", "Moving day with Soham — video 1"],
+    ["/media/soham-moving-02.mp4", "Moving day with Soham — video 2"],
+    ["/media/soham-moving-03.mp4", "Moving day with Soham — video 3"],
+    ["/media/soham-moving-04.mp4", "Moving day with Soham — video 4"],
+  ].map(([src, title]) => ({ type: "video" as const, src: src!, title: title! })),
+];
+
+function MovingMediaCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeMedia = moveMedia[activeIndex]!;
+  const goTo = (index: number) => setActiveIndex((index + moveMedia.length) % moveMedia.length);
+
+  return (
+    <section
+      className="section-space moving-media-section"
+      aria-label="Soham moving photos and videos"
+    >
+      <div className="site-container">
+        <div className="moving-media-heading">
+          <div>
+            <SectionHeading label="Soham on the move">See our team in action</SectionHeading>
+            <p className="section-copy mt-4 max-w-2xl">
+              Real moments and service highlights from Soham Packers and Movers. Use the video
+              controls to play with sound.
+            </p>
+          </div>
+          <div className="moving-media-controls" aria-label="Media slideshow controls">
+            <button type="button" onClick={() => goTo(activeIndex - 1)} aria-label="Previous slide">
+              <ChevronLeft />
+            </button>
+            <span aria-live="polite">
+              {String(activeIndex + 1).padStart(2, "0")} /{" "}
+              {String(moveMedia.length).padStart(2, "0")}
+            </span>
+            <button type="button" onClick={() => goTo(activeIndex + 1)} aria-label="Next slide">
+              <ChevronRight />
+            </button>
+          </div>
+        </div>
+        <figure className="moving-media-frame">
+          {activeMedia.type === "image" ? (
+            <img src={activeMedia.src} alt={activeMedia.title} loading="lazy" />
+          ) : (
+            <video
+              key={activeMedia.src}
+              controls
+              playsInline
+              preload="metadata"
+              aria-label={activeMedia.title}
+            >
+              <source src={activeMedia.src} type="video/mp4" />
+              Your browser does not support embedded video.
+            </video>
+          )}
+          <figcaption>
+            <span>
+              {activeMedia.type === "image" ? "Soham service highlight" : "Moving day video"}
+            </span>
+            <span>{activeMedia.title}</span>
+          </figcaption>
+        </figure>
+        <div className="moving-media-dots" aria-label="Choose a slide">
+          {moveMedia.map((media, index) => (
+            <button
+              aria-label={`Show slide ${index + 1}: ${media.title}`}
+              aria-current={index === activeIndex ? "true" : undefined}
+              className={index === activeIndex ? "active" : ""}
+              key={media.src}
+              onClick={() => goTo(index)}
+              type="button"
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Index() {
   return (
     <>
@@ -237,6 +329,7 @@ function Index() {
             ))}
           </div>
         </div>
+        <MovingMediaCarousel />
         <section id="about" className="section-space">
           <div className="site-container grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
             <div className="photo-frame">
@@ -307,6 +400,11 @@ function Index() {
                 <p className="section-copy mt-4 max-w-xl">
                   Across the street or to another city, find the right moving solution for your
                   home, business or vehicle.
+                </p>
+                <p className="section-copy mt-3 max-w-2xl text-sm">
+                  Looking for a Best packing service, Best Packers and Movers, or Near me shifting
+                  services in Mumbai? Explore our options and share your route for a tailored move
+                  enquiry.
                 </p>
               </div>
               <Button asChild variant="outline" className="w-fit">

@@ -471,6 +471,103 @@ section[id] {
   border: 0;
   box-shadow: none;
 }
+.moving-media-section {
+  background: var(--background);
+}
+.moving-media-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 26px;
+}
+.moving-media-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 700;
+}
+.moving-media-controls button {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--foreground);
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+.moving-media-controls button:hover {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.moving-media-controls svg {
+  width: 18px;
+  height: 18px;
+}
+.moving-media-frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  margin: 0;
+  border-radius: 18px;
+  background: oklch(0.16 0.035 263);
+  box-shadow: 0 20px 55px oklch(0.16 0.035 263 / 18%);
+}
+.moving-media-frame > img,
+.moving-media-frame > video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.moving-media-frame > img {
+  background: #fff;
+}
+.moving-media-frame figcaption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 34px 20px 14px;
+  background: linear-gradient(transparent, oklch(0.12 0.025 263 / 82%));
+  color: white;
+  font-size: 12px;
+}
+.moving-media-frame figcaption span:first-child {
+  font-weight: 700;
+}
+.moving-media-frame figcaption span:last-child {
+  opacity: 0.82;
+  text-align: right;
+}
+.moving-media-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+.moving-media-dots button {
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: var(--border);
+  transition:
+    width 180ms ease,
+    background 180ms ease;
+}
+.moving-media-dots button.active {
+  width: 26px;
+  background: var(--primary);
+}
 .service-guide {
   scroll-margin-top: 110px;
   padding: 27px;
@@ -690,6 +787,24 @@ textarea.field {
   .service-enquiry-cta > button,
   .service-enquiry-cta > div + button {
     width: 100%;
+  }
+  .moving-media-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .moving-media-frame {
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+  }
+  .moving-media-frame figcaption {
+    flex-direction: column;
+    gap: 3px;
+    padding: 30px 12px 10px;
+    font-size: 10px;
+  }
+  .moving-media-frame figcaption span:last-child {
+    text-align: left;
   }
   .quotation-dialog-content .quote-form {
     padding: 10px 4px 4px;
