@@ -154,18 +154,11 @@ const reasons = [
 ];
 
 const moveMedia = [
-  {
-    type: "image" as const,
-    src: "/media/soham-moving-day.jpeg",
-    title: "Soham Packers and Movers service poster",
-  },
-  ...[
-    ["/media/soham-moving-01.mp4", "Moving day with Soham — video 1"],
-    ["/media/soham-moving-02.mp4", "Moving day with Soham — video 2"],
-    ["/media/soham-moving-03.mp4", "Moving day with Soham — video 3"],
-    ["/media/soham-moving-04.mp4", "Moving day with Soham — video 4"],
-  ].map(([src, title]) => ({ type: "video" as const, src: src!, title: title! })),
-];
+  ["/media/soham-moving-01.mp4", "Moving day with Soham — video 1"],
+  ["/media/soham-moving-02.mp4", "Moving day with Soham — video 2"],
+  ["/media/soham-moving-03.mp4", "Moving day with Soham — video 3"],
+  ["/media/soham-moving-04.mp4", "Moving day with Soham — video 4"],
+].map(([src, title]) => ({ src: src!, title: title! }));
 
 function MovingMediaCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -173,65 +166,69 @@ function MovingMediaCarousel() {
   const goTo = (index: number) => setActiveIndex((index + moveMedia.length) % moveMedia.length);
 
   return (
-    <section
-      className="section-space moving-media-section"
-      aria-label="Soham moving photos and videos"
-    >
+    <section className="section-space moving-media-section" aria-label="Soham photos and videos">
       <div className="site-container">
         <div className="moving-media-heading">
           <div>
-            <SectionHeading label="Soham on the move">See our team in action</SectionHeading>
+            <SectionHeading label="Soham on the move">Our team and moving work</SectionHeading>
             <p className="section-copy mt-4 max-w-2xl">
-              Real moments and service highlights from Soham Packers and Movers. Use the video
-              controls to play with sound.
+              Take a look at Soham Packers and Movers. Play the moving videos with sound using the
+              built-in controls.
             </p>
           </div>
-          <div className="moving-media-controls" aria-label="Media slideshow controls">
-            <button type="button" onClick={() => goTo(activeIndex - 1)} aria-label="Previous slide">
-              <ChevronLeft />
-            </button>
-            <span aria-live="polite">
-              {String(activeIndex + 1).padStart(2, "0")} /{" "}
-              {String(moveMedia.length).padStart(2, "0")}
-            </span>
-            <button type="button" onClick={() => goTo(activeIndex + 1)} aria-label="Next slide">
-              <ChevronRight />
-            </button>
-          </div>
         </div>
-        <figure className="moving-media-frame">
-          {activeMedia.type === "image" ? (
-            <img src={activeMedia.src} alt={activeMedia.title} loading="lazy" />
-          ) : (
-            <video
-              key={activeMedia.src}
-              controls
-              playsInline
-              preload="metadata"
-              aria-label={activeMedia.title}
-            >
-              <source src={activeMedia.src} type="video/mp4" />
-              Your browser does not support embedded video.
-            </video>
-          )}
-          <figcaption>
-            <span>
-              {activeMedia.type === "image" ? "Soham service highlight" : "Moving day video"}
-            </span>
-            <span>{activeMedia.title}</span>
-          </figcaption>
-        </figure>
-        <div className="moving-media-dots" aria-label="Choose a slide">
-          {moveMedia.map((media, index) => (
-            <button
-              aria-label={`Show slide ${index + 1}: ${media.title}`}
-              aria-current={index === activeIndex ? "true" : undefined}
-              className={index === activeIndex ? "active" : ""}
-              key={media.src}
-              onClick={() => goTo(index)}
-              type="button"
+        <div className="moving-media-grid">
+          <figure className="moving-media-frame moving-media-photo">
+            <img
+              src="/media/soham-moving-day.jpeg"
+              alt="Soham Packers and Movers service poster showing packing and transportation services"
+              loading="lazy"
             />
-          ))}
+            <figcaption>
+              <span>Our moving services</span>
+              <span>Soham Packers and Movers</span>
+            </figcaption>
+          </figure>
+          <div className="moving-video-carousel">
+            <div className="moving-video-topline">
+              <div>
+                <span className="moving-video-kicker">MOVING DAY VIDEOS</span>
+                <p aria-live="polite">{activeMedia.title}</p>
+              </div>
+              <div className="moving-media-controls" aria-label="Video slideshow controls">
+                <button
+                  type="button"
+                  onClick={() => goTo(activeIndex - 1)}
+                  aria-label="Previous video"
+                >
+                  <ChevronLeft />
+                </button>
+                <span aria-live="polite">
+                  {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                  {String(moveMedia.length).padStart(2, "0")}
+                </span>
+                <button type="button" onClick={() => goTo(activeIndex + 1)} aria-label="Next video">
+                  <ChevronRight />
+                </button>
+              </div>
+            </div>
+            <figure className="moving-media-frame moving-video-frame">
+              <video
+                key={activeMedia.src}
+                controls
+                playsInline
+                preload="metadata"
+                aria-label={activeMedia.title}
+              >
+                <source src={activeMedia.src} type="video/mp4" />
+                Your browser does not support embedded video.
+              </video>
+              <figcaption>
+                <span>Video {String(activeIndex + 1).padStart(2, "0")}</span>
+                <span>Use the player controls for sound</span>
+              </figcaption>
+            </figure>
+          </div>
         </div>
       </div>
     </section>
